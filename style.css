@@ -61,6 +61,7 @@ body {
 
 .weatherinfo {
     border-radius: 10px;
+    box-shadow: 0 5px 8px 0 grey;
     margin: 0 auto 20px auto;
     height: 250px;
     width: 200px;
@@ -70,6 +71,7 @@ body {
 }
 
 .forecastinfo {
+    margin: auto;
     height: 150px;
     padding: 10px;
     overflow-x: auto;
@@ -116,4 +118,8 @@ body {
 
 .forecastimg {
     width: 30px;
+}
+
+#weather-sec {
+    display: none;
 }
