@@ -1,5 +1,6 @@
 const searchBtn = document.querySelector('.searchbtn');
 const errText = document.querySelector('#errtext');
+const weatherSec = document.getElementById("weather-sec");
 
 searchBtn.addEventListener('click', () => {
   const apiKey = '4e3a72e591abbbff32e0bb80ac4c0091';
@@ -7,20 +8,19 @@ searchBtn.addEventListener('click', () => {
 
   if (city) {
     errText.textContent = "";
-    
     const currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
     const forecastURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
 
     fetch(currentWeatherURL)
       .then(response => response.json())
-      .then(data => displayWeather(data))
+      .then(data => {
+        displayWeather(data);
+        weatherSec.style.display = 'block';
+      })
       .catch(err => {
-        if (err) {
-          console.log(err);
-          errText.textContent = "Not found! DAMIT";
-        } else {
-          errText.textContent = "";
-        }
+        console.log(err);
+        errText.textContent = "Specified Place not found or API error.";
+        weatherSec.style.display = 'none';
       });
 
     fetch(forecastURL)
@@ -40,15 +40,15 @@ const displayWeather = (data) => {
   const weatherIcon = document.getElementById('weatherimg');
   const tempText = document.getElementById('temperature');
   const summary = document.getElementById('summary');
-  const weatherInfoDiv = document.querySelector('.weatherinfo');
 
   cityHeader.textContent = '';
   weatherIcon.src = '';
   tempText.textContent = '';
   summary.textContent = '';
 
-  if (data.cod === "404") {
-    weatherInfoDiv.innerHTML = `<p style={color: red}>${data.msg}</p>`
+  if (data.cod === 404) {
+    errText.textContent = "404 Error Occoured, DAMIT!";
+    return;
   } else {
     const cityName = data.name;
     const iconCode = data.weather[0].icon;
